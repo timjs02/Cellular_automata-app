@@ -1,7 +1,7 @@
 This project is dedicated to creating some Cellular automata that I personally find interesting.
 The goal is to scale from a 1-D example, to 3x 2-D examples and 2x 3-D examples, if my computer can handle it.
 
-Structure:
+Structure: 
 - scripting, algorithm and logic/math in Python
 - frontend in Javascript (optional:by using three.js/p5.js), play video file using JS
 
