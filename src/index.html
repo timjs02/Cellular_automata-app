@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link defer href="https://vjs.zencdn.net/8.16.1/video-js.css" rel="stylesheet" />
+    <script defer src="https://vjs.zencdn.net/8.16.1/video.min.js"></script>
+    <title>Cellular Automata</title>
+</head>
+  
+<body>
+    <header>
+        <h1>Cellular Automata</h1>
+        <p>"Cellular Automata" is a simple model of computation that can be used to simulate complex systems. It is a grid of cells, each of which can be in one of a finite number of states. The state of each cell is determined by the states of its neighbors according to a set of rules. The rules can be simple or complex, and can be applied in parallel or sequentially. Cellular Automata can be used to model a wide variety of systems, including physical, biological, and social systems. They have been used to study phenomena such as pattern formation, self-organization, and emergent behavior.</p>
+    </header>
+    <video
+      id="my-video"
+      class="video-js"
+      controls
+      preload="auto"
+      width="640"
+      height="264"
+      poster=""
+      data-setup="{}"
+    >
+      <!--<source src="./ext/animation.mov" type="video/mov" />-->
+      <header>
+        <h2>Test Video</h2>
+      </header>
+      <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4" type="video/mp4" /> 
+      <p class="vjs-no-js">
+        To view this video please enable JavaScript, and consider upgrading to a
+        web browser that
+        <a href="https://videojs.com/html5-video-support/" target="_blank">
+            supports HTML5 video</a>
+      </p>
+    </video>
+    
+</body>
+
+</html>
