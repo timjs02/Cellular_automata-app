@@ -27,8 +27,8 @@ General algorithm for CA:
 - Calculate per gen, for every cell at t = f(neighbors at t-1) = tbd ...
 - Make frames of gens -> play frames ...
 - Pseudocode:
-    // neighborhood calculation, tbd how to compute neighborhood
-    - func neighb(cell_pos, grid):
+-     // neighborhood calculation, tbd how to compute neighborhood
+      func neighb(cell_pos, grid):
         x, y, .. = cell_pos
         // tbd, depends on how neighborhood is defined. Wolfram's def.: adjacent cells
         coordinates = [(x-1, y, ...), (x-1, y-1, ...), (x, y, ...), ...]
@@ -47,27 +47,26 @@ General algorithm for CA:
 
     // cell state as function of the neighborhood in gen with t - 1
     - func cell_state(cell_pos, grid):
-        new_state = NULL
+    -     new_state = NULL
+          ruleset = [(neighborhood configuration, next generation value for center cell), ...]
         
-        ruleset = [(neighborhood configuration, next generation value for center cell), ...]
-
-        nh, crd = neighb(cell_pos, grid)
-        for (conf, value) in ruleset:
-            if conf == nh: 
-                new_state = value
-
-        if new_state == NULL: throw error
-        return new_state
+          nh, crd = neighb(cell_pos, grid)
+                for (conf, value) in ruleset:
+                    if conf == nh: 
+                        new_state = value
+        
+          if new_state == NULL: throw error
+          return new_state
 
 
     - func gen(old_grid):
-        for i to grid length - 1:
+    -     for i to grid length - 1:
             for j to grid length-1: 
                 ...
                     new_grid[i][j][...] = cell_state((i, j, ...), old_grid)
-        return new_grid
+          return new_grid
     
-    - func display(grid, generations, inf, dim, gcount):
+    func display(grid, generations, inf, dim, gcount):
         if not inf:
             gen = 0 // current generation
             gens = [] // generation series until generations var reached (generations - 1 = gens max index)
@@ -96,16 +95,16 @@ General algorithm for CA:
         grid = [0 for i to g] * n
         arr = [initial conditions]
         grid = arr
-
+        
         // generation handling 
         inf = bool 
         gen_c = generation count to reach
-
+        
         if inf:
-            // infinite generations
-            display(grid, 0, inf, n, g)
+        // infinite generations
+        display(grid, 0, inf, n, g)
         else:
-            display(grid, gen_c, inf, n, g)
+        display(grid, gen_c, inf, n, g)
 
 
         
