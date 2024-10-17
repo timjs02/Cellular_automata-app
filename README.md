@@ -51,9 +51,9 @@ General algorithm for CA:
           ruleset = [(neighborhood configuration, next generation value for center cell), ...]
         
           nh, crd = neighb(cell_pos, grid)
-                for (conf, value) in ruleset:
-                    if conf == nh: 
-                        new_state = value
+            for (conf, value) in ruleset:
+                if conf == nh: 
+                    new_state = value
         
           if new_state == NULL: throw error
           return new_state
@@ -113,12 +113,13 @@ General algorithm for CA:
 
 
 
-Rules for Wolfram Elementary CA:
+Constraints for Wolfram Elementary CA:
 - Cell-Grid: 1-D
 - Cell: 1 Square
 - States: 2 States -> 0/1
 - Neighborhood: Adjascent cells to a cell -> 3 cells total
 - cell at t = f(neighbors at t-1) = tbd
+
 General algorithm for Wolfram Elementary CA:
 - Create 1-D Grid
 - Initialize initial conditions => gen 0, e.g. center cell = 1
