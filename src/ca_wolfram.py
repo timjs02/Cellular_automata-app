@@ -52,7 +52,7 @@ class Elementary():
     def gen(self, old_grid: np.ndarray):
         grid_length = old_grid.size
         new_grid = np.zeros(grid_length)
-        
+
         # np arrays count from 1 apprently?
         # Fill in the new grid with the new states of the cells
         for i in range(1, grid_length):
@@ -80,6 +80,3 @@ class Rule90(Elementary):
             [0, 0, 1]: 1,
             [0, 0, 0]: 0
         }
-
-    def rule_appl(self):
-        pass
