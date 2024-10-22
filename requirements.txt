@@ -1,3 +1,5 @@
 matplotlib
 numpy
 imageio
+scipy
+time
