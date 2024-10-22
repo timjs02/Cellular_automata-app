@@ -5,7 +5,7 @@ import matplotlib as mpl
 # ruleset binary number representation to arbitrary output mapping 
 # 2**8, 256 rulesets possible
 class Elementary:
-    def __init__(self, grid: np.ndarray):
+    def __init__(self, grid: np.ndarray, rule: int):
         self.grid = grid
         # self.dim = dim
 
@@ -13,6 +13,8 @@ class Elementary:
         self.states = [0, 1]
         self.neighborhood = 3
         self.rule_table = {}
+
+        self.build_rule_table(rule)
 
         # Initial conditions given by user
         assert isinstance(self.grid, np.ndarray), "Grid must be a numpy array"
@@ -70,56 +72,25 @@ class Elementary:
             new_grid[i] = self.cell_state(i, old_grid)
 
         return new_grid
+    
+    def build_rule_table(self, rule):
+        # Convert rule number to binary string, padded to 8 bits
+        binary_rule = f"{rule:08b}"
+
+        # Create rule table from binary string
+        for i in range(8):
+            # Convert index to binary and pad to 3 bits
+            neighborhood = f"{i:03b}"
+            # Convert binary string to tuple of integers
+            neighborhood_tuple = tuple(int(bit) for bit in neighborhood)
+            # Map neighborhood to corresponding output state from binary_rule
+            self.rule_table[neighborhood_tuple] = int(binary_rule[7 - i])
+            # test
+            print(neighborhood_tuple, self.rule_table[neighborhood_tuple])
 
 """
+testing:
 ruleset-table: rule 90, or binary rule 01011010
     neihboorhood ->     111 110 101 100 011 010 001 000
     center cell state-> 0   1   0   1   1   0   1   0
 """
-class Rule90(Elementary):
-    def __init__(self, rule, grid: np.ndarray):
-        super().__init__(grid=grid)
-        assert rule == 90, "Rule must be 90"
-        self.rule = rule
-        self.rule_table = {
-            (1, 1, 1): 0,
-            (1, 1, 0): 1,
-            (1, 0, 1): 0,
-            (1, 0, 0): 1,
-            (0, 1, 1): 1,
-            (0, 1, 0): 0,
-            (0, 0, 1): 1,
-            (0, 0, 0): 0
-        }
-
-class Rule110(Elementary):
-    def __init__(self, rule, grid: np.ndarray):
-        super().__init__(grid=grid)
-        assert rule == 110, "Rule must be 110"
-        self.rule = rule
-        self.rule_table = {
-            (1, 1, 1): 0,
-            (1, 1, 0): 1,
-            (1, 0, 1): 1,
-            (1, 0, 0): 0,
-            (0, 1, 1): 1,
-            (0, 1, 0): 1,
-            (0, 0, 1): 1,
-            (0, 0, 0): 0
-        }
-
-class Rule30(Elementary):
-    def __init__(self, rule, grid: np.ndarray):
-        super().__init__(grid=grid)
-        assert rule == 30, "Rule must be 30"
-        self.rule = rule
-        self.rule_table = {
-            (1, 1, 1): 0,
-            (1, 1, 0): 0,
-            (1, 0, 1): 0,
-            (1, 0, 0): 1,
-            (0, 1, 1): 1,
-            (0, 1, 0): 1,
-            (0, 0, 1): 1,
-            (0, 0, 0): 0
-        }
