@@ -7,7 +7,6 @@ import matplotlib as mpl
 class Elementary:
     def __init__(self, grid: np.ndarray, rule: int):
         self.grid = grid
-        # self.dim = dim
 
         # Elementary Wolfram CA characteristics
         self.states = [0, 1]
