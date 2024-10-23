@@ -46,7 +46,15 @@ class Elementary:
             print ("Error in neighborhood function")
             exit(1)
         return nh, coord
+    def simulate(self, generations: int):
+        history = [self.grid.copy()]
+        current_grid = self.grid
 
+        for _ in range(generations):
+            current_grid = self.next_gen(current_grid)
+            history.append(current_grid.copy())
+
+        return np.array(history)
     # Get the state of a cell in a new generation (t), as function of state of neighbors in previous gen (t-1)
     def cell_state(self, cell_pos: int, grid: np.ndarray):
 
@@ -54,9 +62,9 @@ class Elementary:
         nbrh, coord = self.get_neighborhood(cell_pos, grid)
 
         # Get the new state of the cell by checking the ruleset table
-        new_state = self.rule_table.get(tuple(nbrh), "NULL") # If no rule found, return NULL
+        new_state = self.rule_table.get(tuple(nbrh), None) # If no rule found, return NULL
 
-        if new_state == "NULL": 
+        if new_state == None: 
             print("Error in cell state, no ruleset state found")
             exit(1)
         return new_state
@@ -90,6 +98,7 @@ class Elementary:
 """
 testing:
 ruleset-table: rule 90, or binary rule 01011010
+                        7   6   5   4   3   2   1   0
     neihboorhood ->     111 110 101 100 011 010 001 000
     center cell state-> 0   1   0   1   1   0   1   0
 """

@@ -11,15 +11,12 @@ import sys
 # grid dimensions: n
 # grids per demension: g
 # rule: r
-def algo_1d_wolf(inf, gen_count, n, g, r):
+def algo_1d_wolf(inf, gen_count, n, g, r, random):
     ### Handle initial conditions
     alike = 0
     # Creating dimentional grid
     for d in range(0, n):
         alike = [alike for i in range(g)]
-
-    # Get shape of grid
-    #shape = np.shape(alike)
     
     # Handle states
     states = [0, 1] # binary states
@@ -27,20 +24,29 @@ def algo_1d_wolf(inf, gen_count, n, g, r):
     # Class instantiation
     ca_instance = None
     
-    # Convert dimentional grid list to numpy array with random 
-    #grid = np.random.default_rng().choice(states, size=shape)
-    grid = np.array(alike)
-    # TODO: Handle random initial conditions, use random bool argument to determine if random or not
+    # Convert dimentional grid list to numpy array
+    grid = None
+    # ..randomly
+    if random:
+        # Get shape of grid
+        shape = np.shape(alike)
+        grid = np.random.default_rng().choice(states, size=shape)
+    # ..from middle element
+    elif not random: grid = np.array(alike)
     
-    # Choose initial conditions
-    idx = int(g/2) # middle cell
-    grid[idx] = 1
+    try:
+        # Choose initial conditions
+        idx = int(g/2) # middle cell
+        grid[idx] = 1
 
-    # Rule determination and class instantiation
-    if r < 256:
-        ca_instance = ca.Elementary(grid, r)
-    else: 
-        print("Rule not supported")
+        # Rule determination and class instantiation
+        if r < 256:
+            ca_instance = ca.Elementary(grid, r)
+        else: 
+            print("Rule not supported")
+            exit(1)
+    except Exception as e:
+        print("Error in initial conditions or rule determination: "+str(e))
         exit(1)
 
     # Handle finite generation case
@@ -70,7 +76,7 @@ def display(frames, genCount, inf, dim):
         frames = np.expand_dims(frames, axis=0)
         plt.ylabel('Generations')
         plt.xlabel('Grids')
-        # currently only displaying last generatid frame
+        # currently only displaying last generated frame
         ax.imshow(frames[0], cmap='binary')
         plt.show()
         
@@ -89,13 +95,11 @@ if __name__ == '__main__':
     # Start timer
     start = time.time()
     # Get frames
-    frames = algo_1d_wolf(inf, genCount, n, g, r)
+    frames = algo_1d_wolf(inf, genCount, n, g, r, random=False)
     # End timer
     end = time.time()
     print("Frames generated, time elapsed: ", end - start, "seconds")
     # Display frames
     display(frames=frames, genCount=genCount, inf=inf, dim=n)
 
-    # TODO: Option for acceleration by using multiprocessing
-    # TODO: Implement and check rules 30/110 in Class, implement other rules
-    # TODO: Implement random initial conditions from algo_wolf function parameters
+    # TODO: think abt speed up, ideas: write own c library and import functions, use Cython to improve runtime, use SciPy
