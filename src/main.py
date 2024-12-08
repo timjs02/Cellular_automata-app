@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 #import imageio
-import ca_wolfram as ca
+import ca_cython as ca # Cython module, ignore pylinter warning
 import time
 import sys
 
@@ -32,16 +32,16 @@ def algo_1d_wolf(inf, gen_count, n, g, r, random):
         shape = np.shape(alike)
         grid = np.random.default_rng().choice(states, size=shape)
     # ..from middle element
-    elif not random: grid = np.array(alike)
-    
-    try:
+    elif not random: 
         # Choose initial conditions
         idx = int(g/2) # middle cell
         grid[idx] = 1
-
+        grid = np.array(alike)
+    
+    try:
         # Rule determination and class instantiation
         if r < 256:
-            ca_instance = ca.Elementary(grid, r)
+            ca_instance = ca.Elementary(grid, r, g)
         else: 
             print("Rule not supported")
             exit(1)
@@ -86,11 +86,12 @@ def display(frames, genCount, inf, dim):
                 image = imageio.imread(img)
                 writer.append_data(image)"""
 
+# Run setup.py to build cython extension
 if __name__ == '__main__':
     inf = False # infinite case
-    genCount = 4000 # number of generations to simulate, including gen 0
+    genCount = 5000 # number of generations to simulate, including gen 0
     n = 1 # grid dimension
-    g = 8000 # grids per demension
+    g = 10000 # grids per demension
     r = int(sys.argv[1]) # rule
     # Start timer
     start = time.time()
@@ -102,4 +103,10 @@ if __name__ == '__main__':
     # Display frames
     display(frames=frames, genCount=genCount, inf=inf, dim=n)
 
-    # TODO: think abt speed up, ideas: write own c library and import functions, use Cython to improve runtime, use SciPy
+"""
+Interesting rules:
+- 30
+- 90
+- 110
+- 184
+"""
