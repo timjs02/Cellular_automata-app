@@ -1,6 +1,6 @@
 <h1>Cellular automata</h1>
 This project is dedicated to creating some Cellular automata that I personally find interesting.
-The goal is to scale from a 1-D example, to 3x 2-D examples and 2x 3-D examples, if my computer can handle it.
+The goal is to scale from a 1-D implementation, to 2-D and 3-D implementations.
 
 <h4>Program structure: </h4>
 <ul>
