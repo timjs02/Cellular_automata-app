@@ -68,21 +68,28 @@ def main():
 
             # Get all cell values for grid
             # Gen should contain next vertical * horizontal values
-            for y in range(1, size+1):
-                # Add values of one row
-                dec_line = out[i+y].decode("utf-8")
-                # Split line into list
-                dec_line = dec_line.split()
-                # Convert to int
-                dec_line = list(map(int, dec_line))
-                gen_container.append(dec_line)
+            for z in range(1, size+1):
+                # Get lines for each z coordinate
+                z_container = []
+                for y in range(0, size):
+                    # Add values of one row
+                    dec_line = out[i+z+y].decode("utf-8")
+                    # Split line into list
+                    dec_line = dec_line.split()
+                    # Convert to int
+                    dec_line = list(map(int, dec_line))
+                    
+                    # Append to z_container
+                    z_container.append(dec_line)
+                
+                gen_container.append(z_container)
                 
             gens.append(array(gen_container))
             i += size-1
         i+=1
         
     # Create animation
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(projection='3d')
     ims = []
     # Generate animation
     for i, gen in enumerate(gens):

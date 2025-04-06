@@ -221,8 +221,26 @@ Add additional notes about how to deploy this on a live system
 </code>
 
 
+<<<<<<< Updated upstream
 
 ## Built With
+=======
+<h4>Constraints for 1D / Wolfram Elementary CA:</h4>
+<ul>
+    <li>Cell-Grid: 1-D</li>
+    <li>Cell: 1 Square</li>
+    <li>States: 2 States -> 0/1</li>
+    <li>Neighborhood: Adjascent cells to a cell -> 3 cells total</li>
+    <li>cell at t = f(neighbors at t-1) = tbd</li>
+</ul>
+
+<h4>General algorithm for 1D / Wolfram Elementary CA:</h4>
+<ul>
+    <li>Create 1-D Grid</li>
+    <li>Initialize initial conditions => gen 0, e.g. center cell = 1</li>
+    <li>Calculate gen 1, the state of each cell = f(neighborhood at t-1) = binary number representation to arbitrary output mapping (2**8, 256 rulesets possible with just this definition)</li>
+</ul>
+>>>>>>> Stashed changes
 
 * [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
 * [Maven](https://maven.apache.org/) - Dependency Management
