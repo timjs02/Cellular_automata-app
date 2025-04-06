@@ -1,4 +1,3 @@
-import sys
 from matplotlib import pyplot as plt
 from matplotlib import animation
 from numpy import array
