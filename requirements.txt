@@ -1,5 +1,3 @@
-Python 3.9.6
-Modules:
 contourpy           1.3.0
 cycler              0.12.1
 fonttools           4.57.0

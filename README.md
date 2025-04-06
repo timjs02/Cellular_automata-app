@@ -28,11 +28,14 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+The software and versions needed:
 
 ```
-Give examples
-See requirements.txt for Python version and modules to install.
+Using Python 3.9.6
+Using Apple clang version 15.0.0 (clang-1500.3.9.4)
+    Target: arm64-apple-darwin23.3.0
+    Thread model: posix
+See requirements.txt for Python modules to install.
 ```
 
 ### Installing
@@ -95,7 +98,7 @@ Add additional notes about how to deploy this on a live system
 </ul>
 
 ### 1D
-<h4>Constraints for Wolfram Elementary CA:</h4>
+<h4>Constraints for 1D / Wolfram Elementary CA:</h4>
 <ul>
     <li>Cell-Grid: 1-D</li>
     <li>Cell: 1 Square</li>
@@ -104,7 +107,7 @@ Add additional notes about how to deploy this on a live system
     <li>cell at t = f(neighbors at t-1) = tbd</li>
 </ul>
 
-<h4>General algorithm for Wolfram Elementary CA:</h4>
+<h4>General algorithm for 1D / Wolfram Elementary CA:</h4>
 <ul>
     <li>Create 1-D Grid</li>
     <li>Initialize initial conditions => gen 0, e.g. center cell = 1</li>
@@ -221,26 +224,8 @@ Add additional notes about how to deploy this on a live system
 </code>
 
 
-<<<<<<< Updated upstream
 
 ## Built With
-=======
-<h4>Constraints for 1D / Wolfram Elementary CA:</h4>
-<ul>
-    <li>Cell-Grid: 1-D</li>
-    <li>Cell: 1 Square</li>
-    <li>States: 2 States -> 0/1</li>
-    <li>Neighborhood: Adjascent cells to a cell -> 3 cells total</li>
-    <li>cell at t = f(neighbors at t-1) = tbd</li>
-</ul>
-
-<h4>General algorithm for 1D / Wolfram Elementary CA:</h4>
-<ul>
-    <li>Create 1-D Grid</li>
-    <li>Initialize initial conditions => gen 0, e.g. center cell = 1</li>
-    <li>Calculate gen 1, the state of each cell = f(neighborhood at t-1) = binary number representation to arbitrary output mapping (2**8, 256 rulesets possible with just this definition)</li>
-</ul>
->>>>>>> Stashed changes
 
 * [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
 * [Maven](https://maven.apache.org/) - Dependency Management
