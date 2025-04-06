@@ -249,7 +249,8 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 ## Acknowledgments
 
 * Hat tip to anyone whose code was used
-* Inspiration
+* Inspiration: https://matplotlib.org/stable/gallery/animation/dynamic_image.html, https://matplotlib.org/stable/gallery/animation/animation_demo.html
+* 
 * etc
 * https://gist.github.com/timjs02/723e52bee7e99c61ab8dd3455d7d65c5
 
