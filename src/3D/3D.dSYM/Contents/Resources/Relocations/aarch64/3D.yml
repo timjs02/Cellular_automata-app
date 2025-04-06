@@ -1,0 +1,12 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/tjs/Projects/Github/Cellular_automata-app/src/3D/3D'
+relocations:
+  - { offsetInCU: 0x26, offset: 0x26, size: 0x8, addend: 0x0, symName: _neighborhood, symObjAddr: 0x0, symBinAddr: 0x1000033D0, symSize: 0x1E4 }
+  - { offsetInCU: 0x48, offset: 0x48, size: 0x8, addend: 0x0, symName: _neighborhood, symObjAddr: 0x0, symBinAddr: 0x1000033D0, symSize: 0x1E4 }
+  - { offsetInCU: 0x142, offset: 0x142, size: 0x8, addend: 0x0, symName: _print_lattice, symObjAddr: 0x1E4, symBinAddr: 0x1000035B4, symSize: 0x11C }
+  - { offsetInCU: 0x1D6, offset: 0x1D6, size: 0x8, addend: 0x0, symName: _cell_calc, symObjAddr: 0x300, symBinAddr: 0x1000036D0, symSize: 0x25C }
+  - { offsetInCU: 0x2A2, offset: 0x2A2, size: 0x8, addend: 0x0, symName: _init, symObjAddr: 0x55C, symBinAddr: 0x10000392C, symSize: 0x48 }
+  - { offsetInCU: 0x2E2, offset: 0x2E2, size: 0x8, addend: 0x0, symName: _init_rnd, symObjAddr: 0x5A4, symBinAddr: 0x100003974, symSize: 0xF0 }
+  - { offsetInCU: 0x376, offset: 0x376, size: 0x8, addend: 0x0, symName: _main, symObjAddr: 0x694, symBinAddr: 0x100003A64, symSize: 0x4B8 }
+...
