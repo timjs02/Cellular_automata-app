@@ -1,12 +1,7 @@
-<h1>Cellular automata</h1>
-This project is dedicated to creating some Cellular automata that I personally find interesting.
-The goal is to scale from a 1-D implementation, to 2-D and 3-D implementations.
+# Cellular Automata
 
-<h4>Program structure: </h4>
-<ul>
-<li>scripting, algorithm and logic/math in Python</li>
-<li>frontend in Javascript (optional:by using three.js/p5.js), play video file using JS </li>
-</ul>
+This project is dedicated to creating some Cellular automata that I personally find interesting.
+The goal is to simulate in 1-D, 2-D and eventually 3-D.
 <h4>Charasteristics of a Cellular automata (=CA):</h4>
 <ul>
     <li>A grid of cells (1-D, 2-D, 3-D)</li>
@@ -26,6 +21,71 @@ The goal is to scale from a 1-D implementation, to 2-D and 3-D implementations.
             <li>---</li>
         </ul>
 </ul>
+
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+
+### Prerequisites
+
+What things you need to install the software and how to install them
+
+```
+Give examples
+See requirements.txt for Python version and modules to install.
+```
+
+### Installing
+
+A step by step series of examples that tell you how to get a development env running
+
+Say what the step will be
+
+```
+Give the example
+```
+
+And repeat
+
+```
+until finished
+```
+
+End with an example of getting some data out of the system or using it for a little demo
+
+## Running the tests
+
+Explain how to run the automated tests for this system
+
+### Break down into end to end tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+### And coding style tests
+
+Explain what these tests test and why
+
+```
+Give an example
+```
+
+## Deployment
+
+Add additional notes about how to deploy this on a live system
+
+## Approach
+<ul>
+<li>scripting, algorithm and logic/math in Python</li>
+<li>frontend in Javascript (optional:by using three.js/p5.js), play video file using JS </li>
+</ul>
+
+## Implementation
+
+### General
 <h4>General algorithm for CA:</h4>
 <ul>
     <li>Create x-D Grid</li>
@@ -34,6 +94,30 @@ The goal is to scale from a 1-D implementation, to 2-D and 3-D implementations.
     <li>Make frames of gens -> play frames ...</li>
 </ul>
 
+### 1D
+<h4>Constraints for Wolfram Elementary CA:</h4>
+<ul>
+    <li>Cell-Grid: 1-D</li>
+    <li>Cell: 1 Square</li>
+    <li>States: 2 States -> 0/1</li>
+    <li>Neighborhood: Adjascent cells to a cell -> 3 cells total</li>
+    <li>cell at t = f(neighbors at t-1) = tbd</li>
+</ul>
+
+<h4>General algorithm for Wolfram Elementary CA:</h4>
+<ul>
+    <li>Create 1-D Grid</li>
+    <li>Initialize initial conditions => gen 0, e.g. center cell = 1</li>
+    <li>Calculate gen 1, the state of each cell = f(neighborhood at t-1) = binary number representation to arbitrary output mapping (2**8, 256 rulesets possible with just this definition)</li>
+</ul>
+
+<h4>ruleset-table: rule 90, or binary rule 01011010</h4>
+<ul>
+    <li>neihboorhood -> 111 110 101 100 011 010 001 000</li>
+    <li>center cell state-> 0 1 0 1 1 0 1 0</li>
+</ul>
+
+<h4>other rulesets: (link...)</h4>
 <h4>Pseudocode:</h4>
 
 <code>
@@ -136,30 +220,37 @@ The goal is to scale from a 1-D implementation, to 2-D and 3-D implementations.
         display(frames, inf, gen_c)
 </code>
 
-_________________________________________________
 
-<h4>Constraints for Wolfram Elementary CA:</h4>
-<ul>
-    <li>Cell-Grid: 1-D</li>
-    <li>Cell: 1 Square</li>
-    <li>States: 2 States -> 0/1</li>
-    <li>Neighborhood: Adjascent cells to a cell -> 3 cells total</li>
-    <li>cell at t = f(neighbors at t-1) = tbd</li>
-</ul>
 
-<h4>General algorithm for Wolfram Elementary CA:</h4>
-<ul>
-    <li>Create 1-D Grid</li>
-    <li>Initialize initial conditions => gen 0, e.g. center cell = 1</li>
-    <li>Calculate gen 1, the state of each cell = f(neighborhood at t-1) = binary number representation to arbitrary output mapping (2**8, 256 rulesets possible with just this definition)</li>
-</ul>
+## Built With
 
-<h4>ruleset-table: rule 90, or binary rule 01011010</h4>
-<ul>
-    <li>neihboorhood -> 111 110 101 100 011 010 001 000</li>
-    <li>center cell state-> 0 1 0 1 1 0 1 0</li>
-</ul>
+* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
+* [Maven](https://maven.apache.org/) - Dependency Management
+* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
 
-<h4>other rulesets: (link...)</h4>
+## Contributing
 
-_______________________________________________________________________________________
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+
+## Versioning
+
+We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+
+## Authors
+
+* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+
+See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+## Acknowledgments
+
+* Hat tip to anyone whose code was used
+* Inspiration: https://matplotlib.org/stable/gallery/animation/dynamic_image.html, https://matplotlib.org/stable/gallery/animation/animation_demo.html
+* 
+* etc
+* https://gist.github.com/timjs02/723e52bee7e99c61ab8dd3455d7d65c5
+
