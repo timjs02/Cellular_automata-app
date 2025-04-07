@@ -29,11 +29,15 @@ The software and versions needed:
 
 ```
 Using Python 3.9.6
+
+1010.6	1053.12		15.0.0 (clang-1500.3.9.4)
 Using Apple clang version 15.0.0 (clang-1500.3.9.4)
     Target: arm64-apple-darwin23.3.0
     Thread model: posix
     OS: macOS Sonoma 14.3
     Chip: Apple M1
+    XCode: 15.3
+Using LLVM version 16.0.0
 See requirements.txt for Python modules to install.
 ```
 
