@@ -111,18 +111,20 @@ void cell_calc(int*** lattice, int*** next_lattice, int size, int gen){
     }
 }
 
-/// @brief Do basic configuration where middle cell = 1
+/// @brief Do basic configuration where middle cell = 1∏
 /// @param lattice lattice pointer
 /// @param size size var
-void init(int*** lattice, int*** next_lattice, int size){
-    lattice[(int)size/2][(int)size/2][(int)size/2] = 1;
+void init(int*** lattice, int size){
+    int mid = size/2;
+    lattice[mid][mid][mid] = 1;
+    //printf("Initial cell: %i\n", lattice[mid][mid][mid]);
 }
 
 /// @brief Random initialization of lattice
 /// @param lattice 
 /// @param next_lattice 
 /// @param size 
-void init_rnd(int*** lattice, int*** next_lattice, int size){
+void init_rnd(int*** lattice, int size){
     // Randomly assign cells to be alive or dead
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
@@ -189,7 +191,7 @@ int main(int argc, char **argv){
         return 1;
     }
 
-    init(lattice, next_lattice, size);
+    init_rnd(lattice, size);
     //init_rnd(lattice, next_lattice, size);
     print_lattice(lattice, size, 0);
 
