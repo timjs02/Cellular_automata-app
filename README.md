@@ -1,7 +1,7 @@
 # Cellular Automata
 
 This project is dedicated to creating some Cellular automata that I personally find interesting.
-The goal is to simulate in 1-D, 2-D and eventually 3-D.
+The goal is to simulate in 1-D, 2-D and 3-D.
 <h4>Charasteristics of a Cellular automata (=CA):</h4>
 <ul>
     <li>A grid of cells (1-D, 2-D, 3-D)</li>
@@ -13,12 +13,9 @@ The goal is to simulate in 1-D, 2-D and eventually 3-D.
     </li>
     <li><h4>Rulesets:</h4></li>
         <ul>
-            <li>1-D example: Wolfram Elementary CA</li>
-            <li>Conway's Game of Life</li>
-            <li>--</li>
-            <li>--</li>
-            <li>---</li>
-            <li>---</li>
+            <li>1D: Wolfram Elementary CA</li>
+            <li>2D: Conway's Game of Life</li>
+            <li>3D: Crystal Growth 1 (Jason Rampe) as 0-6/1,3/2/N</li>
         </ul>
 </ul>
 
@@ -35,50 +32,66 @@ Using Python 3.9.6
 Using Apple clang version 15.0.0 (clang-1500.3.9.4)
     Target: arm64-apple-darwin23.3.0
     Thread model: posix
+    OS: macOS Sonoma 14.3
+    Chip: Apple M1
 See requirements.txt for Python modules to install.
 ```
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
+A step by step series of examples that tell you how to get a development and deployment env running on Mac, assuming you have git installed. 
+Other versions may still work but should be avoided. 
 
-Say what the step will be
+Step 1: Install correct python version: https://www.python.org/downloads/
 
-```
-Give the example
-```
-
-And repeat
-
+Step 2: Install correct clang version
 ```
 until finished
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
+Step 3: Clone repository (==repo)
+At your desired folder, run:
 ```
-Give an example
+git clone
 ```
 
-### And coding style tests
-
-Explain what these tests test and why
-
+Step 4: Set up virtual environment for python in the repo base folder
 ```
-Give an example
+example
 ```
+
+Step 5: Install dependencies
+Activate your virtual environment
+```
+example
+```
+Use requirements.txt to install python modules and dependencies
+```
+python -m pip install -r requirements.txt
+```
+
+
+## Demo
 
 ## Deployment
+Step 1: Compile C file, for example in 3D. Important: Do not change the path in the repo and the name of the file /src/3D/3D !
+```
+/path/.../clang -g /path/to/repo/.../Cellular_automata-app/src/3D/3D.c -o /path/to/repo/.../Cellular_automata-app/src/3D/3D
+```
+Example: 3D
+```
+/usr/bin/clang -g /path/to/repo/.../Cellular_automata-app/src/3D/3D.c -o /path/to/repo/.../Cellular_automata-app/src/3D/3D
+```
+Step 2: Run python file, for 3D
+```
+/path/to/repo/.../Cellular_automata-app/.venv/bin/python /path/to/repo/.../Cellular_automata-app/src/3D/3D_UI.py
+```
+Step 3: Enter desired inputs for the simulation, where:
+- size: Length of one "dimension" or axis
+- generations: Number of generations to calculate. Note that needed compute increases with O(n^3) per generation, where n equals size.
+- time delay: time between frames in milliseconds
 
-Add additional notes about how to deploy this on a live system
+Step 4: Last simulation is stored as "3D_animation.gif" in /ext/
 
 ## Approach
 <ul>
@@ -222,28 +235,6 @@ Add additional notes about how to deploy this on a live system
         frames = algo(inf, genCount, n, g, r)
         display(frames, inf, gen_c)
 </code>
-
-
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
-
-## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
