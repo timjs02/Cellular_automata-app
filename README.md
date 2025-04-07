@@ -60,8 +60,7 @@ Step 4: Set up virtual environment for python in the repo base folder
 example
 ```
 
-Step 5: Install dependencies
-Activate your virtual environment
+Step 5: Activate virtual environment and install dependencies
 ```
 example
 ```
