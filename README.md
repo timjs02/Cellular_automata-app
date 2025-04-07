@@ -251,9 +251,7 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration: https://matplotlib.org/stable/gallery/animation/dynamic_image.html, https://matplotlib.org/stable/gallery/animation/animation_demo.html
-* 
-* etc
-* https://gist.github.com/timjs02/723e52bee7e99c61ab8dd3455d7d65c5
+* Inspiration: https://matplotlib.org/stable/gallery/animation/dynamic_image.html, https://matplotlib.org/stable/gallery/animation/animation_demo.html, https://matplotlib.org/stable/gallery/mplot3d/voxels_numpy_logo.html#sphx-glr-gallery-mplot3d-voxels-numpy-logo-py, https://matplotlib.org/stable/gallery/animation/random_walk.html#sphx-glr-gallery-animation-random-walk-py, https://matplotlib.org/stable/plot_types/3D/voxels_simple.html#sphx-glr-plot-types-3d-voxels-simple-py
+* Credit for rules implemented in testing: https://softologyblog.wordpress.com/2019/12/28/3d-cellular-automata-3/
+* Readme Template: https://gist.github.com/timjs02/723e52bee7e99c61ab8dd3455d7d65c5
 

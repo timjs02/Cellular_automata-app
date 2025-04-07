@@ -31,6 +31,7 @@ int neighborhood(int*** lattice, int size, int x, int y, int z) {
 
                 // Check if the neighbor is within bounds
                 if ((nx >= 0 && nx < size && ny >= 0 && ny < size && nz >= 0 && nz < size)) {
+                    // toroidal wrapping
                     // Add the value of the neighbor to the sum
                     sum += lattice[nz][ny][nx];
                 }
@@ -64,7 +65,7 @@ void print_lattice(int*** lattice, int size, int gen){
 }
 
 
-/// @brief Calculate next cell states simultaneously, conventional game of life approach (in Golly/RLE: B3/S23) \n. Using Moore neighborhood and 2D lattice 
+/// @brief Calculate next cell states simultaneously \n. Using Moore neighborhood and 3D lattice . Clouds1: Rule 13-26/13-14,17-19/2/M
 /// @param lattice lattice pointer
 /// @param size lattice size
 /// @param gen generation count number 
@@ -79,45 +80,70 @@ void cell_calc(int*** lattice, int*** next_lattice, int size, int gen){
                 int nb_sum = neighborhood(lattice, size, x, y, z);
 
                 int cell = lattice[z][y][x];
-                // death
-                // by overpopulation
-                if (cell == 1 && nb_sum>3)
+
+                // stasis: alive cell persists for case, otherwise dead
+                if (cell == 1 && (nb_sum >= 13 && nb_sum <= 26))
                 {
-                    next_lattice[z][y][x] = 0;
+                    continue;
                 }
-                // by underpopulation
-                if (cell == 1 && nb_sum<2)
+                // death
+                else 
                 {
                     next_lattice[z][y][x] = 0;
                 }
                 
                 // birth
-                if (cell == 0 && nb_sum == 3)
+                if (cell == 0 && ((nb_sum >= 13 && nb_sum <= 14) || (nb_sum >= 17 && nb_sum <= 19)))
                 {
                     next_lattice[z][y][x] = 1;
                 }
                 
-                // stasis
-                if (cell == 1 && (nb_sum == 2 || nb_sum == 3))
+                // death
+                // by overpopulation
+                /*
+                if (cell == 1 && nb_sum>2)
                 {
-                    continue;
+                    next_lattice[z][y][x] = 0;
                 }
-                if (cell == 0 && nb_sum != 3)
+                // by underpopulation
+                if (cell == 1 && nb_sum<1)
                 {
-                    continue;
+                    next_lattice[z][y][x] = 0;
                 }
+                */
             }
         }
     }
 }
 
-/// @brief Do basic configuration where middle cell = 1∏
+/// @brief Do basic configuration where middle cell = 1
 /// @param lattice lattice pointer
 /// @param size size var
 void init(int*** lattice, int size){
     int mid = size/2;
     lattice[mid][mid][mid] = 1;
     //printf("Initial cell: %i\n", lattice[mid][mid][mid]);
+}
+
+/// @brief Assign a 3D cross pattern
+/// @param lattice 
+/// @param size 
+void init2(int*** lattice, int size){
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            for (int l = 0; l < size; l++)
+            {
+                if (i == size/2 || j == size/2 || l == size/2)
+                {
+                    lattice[i][j][l] = 1;
+                }
+                else
+                {
+                    lattice[i][j][l] = 0;
+                }
+            }
+        }
+    }
 }
 
 /// @brief Random initialization of lattice
@@ -129,6 +155,20 @@ void init_rnd(int*** lattice, int size){
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             for (int l = 0; l < size; l++)
+            {
+                lattice[i][j][l] = rand() % 2; // Randomly assign 0 or 1
+            }
+        }
+    }
+}
+
+/// @brief Create configuration where a certain area in lattice is randomly assigned: from 1/4 to 3/4 of the size, so half of the lattice volume
+/// @param lattice 
+/// @param size 
+void init_rnd1(int*** lattice, int size){
+    for (int i = size-3*size/4; i < size-size/4; i++) {
+        for (int j = size-3*size/4; j < size-size/4; j++) {
+            for (int l = size-3*size/4; l < size-size/4; l++)
             {
                 lattice[i][j][l] = rand() % 2; // Randomly assign 0 or 1
             }
@@ -191,8 +231,9 @@ int main(int argc, char **argv){
         return 1;
     }
 
-    init_rnd(lattice, size);
-    //init_rnd(lattice, next_lattice, size);
+    //init_rnd(lattice, size);
+    //init_rnd1(lattice, size);
+    init2(lattice, size);
     print_lattice(lattice, size, 0);
 
     // main part

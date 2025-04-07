@@ -115,8 +115,11 @@ def main():
     #print(f"Shape of first generation: {gens[0].shape}")
     # Create setup for 3D plot
     fig = plt.figure()
-    ax = fig.add_subplot(projection='3d') #111,
-    #ax.set_aspect('equal')
+    ax = fig.add_subplot(111, projection='3d') #111,
+    ax.set_aspect('equal')
+    ax.set_xlim3d(0, size)
+    ax.set_ylim3d(0, size)
+    ax.set_zlim3d(0, size)
    
     # Generate animation
     ani = animation.FuncAnimation(fig, func3D, frames=len(gens), fargs=(ax, gens, size), interval=tdelay, blit=False, repeat=False)
