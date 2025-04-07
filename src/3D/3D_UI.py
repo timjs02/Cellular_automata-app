@@ -123,7 +123,8 @@ def main():
    
     # Generate animation
     ani = animation.FuncAnimation(fig, func3D, frames=len(gens), fargs=(ax, gens, size), interval=tdelay, blit=False, repeat=False)
-    #ani.save('../../ext/3D_animation.gif', writer='imagemagick')
+    ani_path = path.dirname(path.realpath(__file__)) + "/../../ext/3D_animation.gif"
+    ani.save(ani_path, writer='imagemagick')
     # Set up the pausing mechanism
     fig.canvas.mpl_connect('key_press_event', lambda event: on_key(event, ani))
     

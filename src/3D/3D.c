@@ -10,7 +10,7 @@
 /// @param x x coordinate
 /// @param y y coordinate
 /// @return Number of alive neighbors
-int neighborhood(int*** lattice, int size, int x, int y, int z) {
+int neighborhood_M(int*** lattice, int size, int x, int y, int z) {
     int sum = 0;
     
     // Iterate through the Moore neighborhood (3x3 lattice centered on (x, y, z))
@@ -32,6 +32,7 @@ int neighborhood(int*** lattice, int size, int x, int y, int z) {
                 // Check if the neighbor is within bounds
                 if ((nx >= 0 && nx < size && ny >= 0 && ny < size && nz >= 0 && nz < size)) {
                     // toroidal wrapping
+
                     // Add the value of the neighbor to the sum
                     sum += lattice[nz][ny][nx];
                 }
@@ -41,6 +42,46 @@ int neighborhood(int*** lattice, int size, int x, int y, int z) {
     //printf("Sum of neighbors for cell (%d, %d): %d\n", x, y, sum);
     return sum;
 }
+
+/// @brief Calculate the number of alive neighbors in a 3D von Neumann neighborhood
+/// @param lattice Pointer to the lattice
+/// @param size Size of the lattice (assuming square lattice)
+/// @param x x coordinate
+/// @param y y coordinate
+/// @return Number of alive neighbors
+int neighborhood_N(int*** lattice, int size, int x, int y, int z) {
+    int sum = 0;
+    
+    // Iterate through the von Neuman neighborhood ("cross" lattice centered on (x, y, z))
+    
+    for (int dz = -1; dz <= 1; dz++) {
+        for (int dy = -1; dy <= 1; dy++) {
+            for (int dx = -1; dx <= 1; dx++)
+            {
+                // Skip the center cell (x, y) and diagonal neighbors
+                if ((dx == 0 && dy == 0 && dz == 0) || (abs(dx) + abs(dy) + abs(dz) != 1)) {
+                    continue;
+                }
+
+                // Calculate neighbor coordinates
+                int nx = x + dx;
+                int ny = y + dy;
+                int nz = z + dz;
+
+                // Check if the neighbor is within bounds
+                if ((nx >= 0 && nx < size && ny >= 0 && ny < size && nz >= 0 && nz < size)) {
+                    // toroidal wrapping
+
+                    // Add the value of the neighbor to the sum
+                    sum += lattice[nz][ny][nx];
+                }
+            }
+        }
+    }
+    //printf("Sum of neighbors for cell (%d, %d): %d\n", x, y, sum);
+    return sum;
+}
+
 
 /// @brief Print lattice to stdout
 /// @param lattice pointer to lattice to print
@@ -65,7 +106,7 @@ void print_lattice(int*** lattice, int size, int gen){
 }
 
 
-/// @brief Calculate next cell states simultaneously \n. Using Moore neighborhood and 3D lattice . Clouds1: Rule 13-26/13-14,17-19/2/M
+/// @brief Calculate next cell states simultaneously \n. Using Moore neighborhood and 3D lattice. Crystal Growth 1 (Jason Rampe) 0-6/1,3/2/N
 /// @param lattice lattice pointer
 /// @param size lattice size
 /// @param gen generation count number 
@@ -76,13 +117,13 @@ void cell_calc(int*** lattice, int*** next_lattice, int size, int gen){
         {
             for (size_t x = 0; x < size; x++)
             {
-                // Simulitnaneous calculation for next generation
-                int nb_sum = neighborhood(lattice, size, x, y, z);
+                // Simultaneous calculation for next generation
+                int nb_sum = neighborhood_N(lattice, size, x, y, z);
 
                 int cell = lattice[z][y][x];
 
                 // stasis: alive cell persists for case, otherwise dead
-                if (cell == 1 && (nb_sum >= 13 && nb_sum <= 26))
+                if (cell == 1 && (nb_sum >= 0 && nb_sum <= 6))
                 {
                     continue;
                 }
@@ -93,11 +134,16 @@ void cell_calc(int*** lattice, int*** next_lattice, int size, int gen){
                 }
                 
                 // birth
-                if (cell == 0 && ((nb_sum >= 13 && nb_sum <= 14) || (nb_sum >= 17 && nb_sum <= 19)))
+                /*if (cell == 0 && ((nb_sum >= 13 && nb_sum <= 14) || (nb_sum >= 17 && nb_sum <= 19)))
                 {
                     next_lattice[z][y][x] = 1;
                 }
-                
+                */
+                if (cell == 0 && ((nb_sum == 1) || (nb_sum == 3)))
+                {
+                   next_lattice[z][y][x] = 1;
+                }
+
                 // death
                 // by overpopulation
                 /*
@@ -128,7 +174,7 @@ void init(int*** lattice, int size){
 /// @brief Assign a 3D cross pattern
 /// @param lattice 
 /// @param size 
-void init2(int*** lattice, int size){
+void init_cross(int*** lattice, int size){
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             for (int l = 0; l < size; l++)
@@ -171,6 +217,20 @@ void init_rnd1(int*** lattice, int size){
             for (int l = size-3*size/4; l < size-size/4; l++)
             {
                 lattice[i][j][l] = rand() % 2; // Randomly assign 0 or 1
+            }
+        }
+    }
+}
+
+/// @brief Fill the entire lattice with 1s
+/// @param lattice 
+/// @param size 
+void init_fill(int*** lattice, int size){
+    for (int i = 0; i < size; i++) {
+        for (int j = 0; j < size; j++) {
+            for (int l = 0; l < size; l++)
+            {
+                lattice[i][j][l] = 1;
             }
         }
     }
@@ -232,8 +292,9 @@ int main(int argc, char **argv){
     }
 
     //init_rnd(lattice, size);
-    //init_rnd1(lattice, size);
-    init2(lattice, size);
+    init_rnd1(lattice, size);
+    //init_cross(lattice, size);
+    //init_fill(lattice, size);
     print_lattice(lattice, size, 0);
 
     // main part
