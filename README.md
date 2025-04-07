@@ -52,7 +52,7 @@ until finished
 Step 3: Clone repository (==repo)
 At your desired folder, run:
 ```
-git clone
+git clone https://github.com/timjs02/Cellular_automata-app.git
 ```
 
 Step 4: Set up virtual environment for python in the repo base folder
