@@ -3,6 +3,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <time.h>
+#include <string.h>
 
 
 /// @param lattice Pointer to the lattice
@@ -29,13 +30,30 @@ int neighborhood_M(int*** lattice, int size, int x, int y, int z) {
                 int ny = y + dy;
                 int nz = z + dz;
 
-                // Check if the neighbor is within bounds
-                if ((nx >= 0 && nx < size && ny >= 0 && ny < size && nz >= 0 && nz < size)) {
-                    // toroidal wrapping
-
-                    // Add the value of the neighbor to the sum
-                    sum += lattice[nz][ny][nx];
+                // Toroidal wrapping
+                // If the neighbor is out of bounds, wrap around
+                if (nx < 0) { 
+                    nx += size; 
                 }
+                if (nx >= size) { 
+                    nx -= size; 
+                }
+                if (ny < 0) { 
+                    ny += size; 
+                }
+                if (ny >= size) { 
+                    ny -= size; 
+                }
+                if (nz < 0) { 
+                    nz += size; 
+                }
+                if (nz >= size) { 
+                    nz -= size; 
+                }
+
+                // Add the value of the neighbor to the sum
+                sum += lattice[nz][ny][nx];
+                
             }
         }
     }
@@ -67,21 +85,36 @@ int neighborhood_N(int*** lattice, int size, int x, int y, int z) {
                 int nx = x + dx;
                 int ny = y + dy;
                 int nz = z + dz;
-
-                // Check if the neighbor is within bounds
-                if ((nx >= 0 && nx < size && ny >= 0 && ny < size && nz >= 0 && nz < size)) {
-                    // toroidal wrapping
-
-                    // Add the value of the neighbor to the sum
-                    sum += lattice[nz][ny][nx];
+                
+                // Toroidal wrapping
+                // If the neighbor is out of bounds, wrap around
+                if (nx < 0) { 
+                    nx += size; 
                 }
+                if (nx >= size) { 
+                    nx -= size; 
+                }
+                if (ny < 0) { 
+                    ny += size; 
+                }
+                if (ny >= size) { 
+                    ny -= size; 
+                }
+                if (nz < 0) { 
+                    nz += size; 
+                }
+                if (nz >= size) { 
+                    nz -= size; 
+                }
+                
+                // Add the value of the neighbor to the sum
+                sum += lattice[nz][ny][nx];
             }
         }
     }
     //printf("Sum of neighbors for cell (%d, %d): %d\n", x, y, sum);
     return sum;
 }
-
 
 /// @brief Print lattice to stdout
 /// @param lattice pointer to lattice to print
@@ -105,12 +138,11 @@ void print_lattice(int*** lattice, int size, int gen){
     }
 }
 
-
 /// @brief Calculate next cell states simultaneously \n. Using Moore neighborhood and 3D lattice. Crystal Growth 1 (Jason Rampe) 0-6/1,3/2/N
 /// @param lattice lattice pointer
 /// @param size lattice size
 /// @param gen generation count number 
-void cell_calc(int*** lattice, int*** next_lattice, int size, int gen){
+void cell_calc(int*** lattice, int*** next_lattice, int size, int gen, int neighborhood_type){
     for (size_t z = 0; z < size; z++)
     {
         for (size_t y = 0; y < size; y++)
@@ -118,7 +150,13 @@ void cell_calc(int*** lattice, int*** next_lattice, int size, int gen){
             for (size_t x = 0; x < size; x++)
             {
                 // Simultaneous calculation for next generation
-                int nb_sum = neighborhood_N(lattice, size, x, y, z);
+                int nb_sum;
+                if (neighborhood_type == 1) {
+                    nb_sum = neighborhood_N(lattice, size, x, y, z);
+                }
+                if (neighborhood_type == 0) {
+                    nb_sum = neighborhood_M(lattice, size, x, y, z);
+                }
 
                 int cell = lattice[z][y][x];
 
@@ -126,10 +164,9 @@ void cell_calc(int*** lattice, int*** next_lattice, int size, int gen){
                 if (cell == 1 && (nb_sum >= 0 && nb_sum <= 6))
                 {
                     continue;
-                }
-                // death
-                else 
+                } else
                 {
+                    // death
                     next_lattice[z][y][x] = 0;
                 }
                 
@@ -208,13 +245,13 @@ void init_rnd(int*** lattice, int size){
     }
 }
 
-/// @brief Create configuration where a certain area in lattice is randomly assigned: from 1/4 to 3/4 of the size, so half of the lattice volume
+/// @brief Create configuration where a certain area in lattice is randomly assigned: from 4/8 to 5/8 of the size, so 1/4 of the lattice volume
 /// @param lattice 
 /// @param size 
 void init_rnd1(int*** lattice, int size){
-    for (int i = size-3*size/4; i < size-size/4; i++) {
-        for (int j = size-3*size/4; j < size-size/4; j++) {
-            for (int l = size-3*size/4; l < size-size/4; l++)
+    for (int i = 4*size/8; i < 5*size/8; i++) {
+        for (int j = 4*size/8; j < 5*size/8; j++) {
+            for (int l = 4*size/8; l < 5*size/8; l++)
             {
                 lattice[i][j][l] = rand() % 2; // Randomly assign 0 or 1
             }
@@ -243,24 +280,29 @@ int main(int argc, char **argv){
     // Row is "size" cells long -> allocate for length, where each row is array
     int size = 5;
     int gen = 5; // generations to calculate
+    int neighborhood_type = 1; // Default neighborhood type: von Neumann
+
     if (argc > 1)
     {
-        // Size custom, default generation count
-        if (argc == 2 && atoi(argv[1]) > 0)
-        {
-            size = atoi(argv[1]);
-        }
         // Help message
-        else if (argv[1] == "-h")
+        if (strcmp(argv[1], "-h") == 0)
         {
-            printf("Usage: %s <size> <generations>\n", argv[0]);
+            printf("Usage: %s <neighborhood_type> <size> <generations>\n", argv[0]);
+            printf("neighborhood_type: 0 for Moore, 1 for von Neumann (default: 1)\n");
             return 0;
         }
-        // Size and generation count custom
-        else if (argc > 2)
+        // Neighborhood type custom: 
+        neighborhood_type = atoi(argv[1]);
+
+        // Size custom, default generation count
+        if (argc > 2 && atoi(argv[2]) > 0)
         {
-            if (atoi(argv[1]) > 0) size = atoi(argv[1]);
-            if (atoi(argv[2]) > 0) gen = atoi(argv[2]);
+            size = atoi(argv[2]);
+        }
+        // Size and generation count custom
+        if (argc > 3 && atoi(argv[3]) > 0)
+        {
+            gen = atoi(argv[3]);
         }
     }
 
@@ -301,7 +343,7 @@ int main(int argc, char **argv){
     for (int g = 1; g < gen; g++)
     {
         // calculate next generation
-        cell_calc(lattice, next_lattice, size, g);
+        cell_calc(lattice, next_lattice, size, g, neighborhood_type);
         
         // print lattice for next generation
         print_lattice(next_lattice, size, g);

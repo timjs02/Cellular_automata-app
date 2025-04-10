@@ -63,9 +63,23 @@ def main():
     else:
         tdelay = int(tdelay)
     
+    # Neighborhood type: 
+    # M == 1, N == 2
+    n_type = input("Enter neighborhood type to use: either Moore (M) / von Neumann (N): ")
+    if n_type == "":
+        n_type =  1 # default type, von Neumann
+    elif n_type == "M":
+        n_type = 0
+    elif n_type == "N":
+        n_type = 1
+    
+    display_frames = input("Do you want to display the frames during the animation? Significant time increase to be expected (yes/no): ").strip().lower()
+    if display_frames not in ['yes', 'no', 'y', 'n']:
+        display_frames = 'no'  # default not to displaying frames
+    display_frames = display_frames in ['yes', 'y']
     
     s = "{cwd}/3D".format(cwd=path.dirname(path.realpath(__file__)))
-    cmd = [s, str(size), str(generations)]
+    cmd = [s, str(n_type), str(size), str(generations)]
     #print(cmd)
     # Output from C program in stdout pipe
     out = check_output(cmd)
@@ -124,12 +138,13 @@ def main():
     # Generate animation
     ani = animation.FuncAnimation(fig, func3D, frames=len(gens), fargs=(ax, gens, size), interval=tdelay, blit=False, repeat=False)
     ani_path = path.dirname(path.realpath(__file__)) + "/../../ext/3D_animation.gif"
+    print("saving...")
     ani.save(ani_path, writer='imagemagick')
     # Set up the pausing mechanism
     fig.canvas.mpl_connect('key_press_event', lambda event: on_key(event, ani))
-    
-    plt.show()
-            
+    if display_frames:
+        # Display the animation
+        plt.show()
     
 
 main()
