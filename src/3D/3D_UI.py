@@ -64,7 +64,7 @@ def main():
         tdelay = int(tdelay)
     
     # Neighborhood type: 
-    # M == 1, N == 2
+    # M == 0, N == 1
     n_type = input("Enter neighborhood type to use: either Moore (M) / von Neumann (N): ")
     if n_type == "":
         n_type =  1 # default type, von Neumann
@@ -138,8 +138,9 @@ def main():
     # Generate animation
     ani = animation.FuncAnimation(fig, func3D, frames=len(gens), fargs=(ax, gens, size), interval=tdelay, blit=False, repeat=False)
     ani_path = path.dirname(path.realpath(__file__)) + "/../../ext/3D_animation.gif"
+    # Save the animation
     print("saving...")
-    ani.save(ani_path, writer='imagemagick')
+    ani.save(ani_path, writer='ffmpeg')
     # Set up the pausing mechanism
     fig.canvas.mpl_connect('key_press_event', lambda event: on_key(event, ani))
     if display_frames:

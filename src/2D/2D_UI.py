@@ -2,7 +2,7 @@ from matplotlib import pyplot as plt
 from matplotlib import animation
 from numpy import array
 from subprocess import check_output
-from os import getcwd
+from os import path
 
 # Global variable to track pause state 
 paused_bool = False
@@ -42,9 +42,23 @@ def main():
     else:
         tdelay = int(tdelay)
     
+    # Neighborhood type: 
+    # M == 0, N == 1
+    n_type = input("Enter neighborhood type to use: either Moore (M) / von Neumann (N): ")
+    if n_type == "":
+        n_type =  0 # default type, von Neumann
+    elif n_type == "M":
+        n_type = 0
+    elif n_type == "N":
+        n_type = 1
     
-    s = "{cwd}/2D".format(cwd=getcwd())
-    cmd = [s, str(size), str(generations)]
+    display_frames = input("Do you want to display the frames during the animation? Significant time increase to be expected (yes/no): ").strip().lower()
+    if display_frames not in ['yes', 'no', 'y', 'n']:
+        display_frames = 'no'  # default not to displaying frames
+    display_frames = display_frames in ['yes', 'y']
+    
+    s = "{cwd}/2D".format(cwd=path.dirname(path.realpath(__file__)))
+    cmd = [s, str(n_type), str(size), str(generations)]
     print(cmd)
     # Output from C program in stdout pipe
     out = check_output(cmd)
@@ -63,23 +77,22 @@ def main():
         
         if 'GEN' in dec and not (l-i < size):
             print(dec)
+            i+= 1
             gen_container = []
 
             # Get all cell values for grid
             # Gen should contain next vertical * horizontal values
-            for y in range(1, size+1):
-                # Add values of one row
-                dec_line = out[i+y].decode("utf-8")
-                # Split line into list
-                dec_line = dec_line.split()
+            for y in range(0, size):
+                # Add values of one row and split
+                dec_line = out[i].decode("utf-8").split()
                 # Convert to int
                 dec_line = list(map(int, dec_line))
+                
                 gen_container.append(dec_line)
+                i+= 1
                 
             gens.append(array(gen_container))
-            i += size-1
-        i+=1
-        
+    
     # Create animation
     fig, ax = plt.subplots()
     ims = []
@@ -93,12 +106,16 @@ def main():
     
     # Animate the figure    
     ani = animation.ArtistAnimation(fig, ims, interval=tdelay, repeat=False)
+    ani_path = path.dirname(path.realpath(__file__)) + "/../../ext/2D_animation.gif"
+    # Save the animation
+    print("saving...")
+    ani.save(ani_path, writer='ffmpeg')
     
     # Set up the pausing mechanism
     fig.canvas.mpl_connect('key_press_event', lambda event: on_key(event, ani))
     
-    plt.show()
-            
-    
+    if display_frames:
+        # Display the animation
+        plt.show()
 
 main()
