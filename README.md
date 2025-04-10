@@ -1,12 +1,7 @@
-<h1>Cellular automata</h1>
-This project is dedicated to creating some Cellular automata that I personally find interesting.
-The goal is to scale from a 1-D implementation, to 2-D and 3-D implementations.
+# Cellular Automata
 
-<h4>Program structure: </h4>
-<ul>
-<li>scripting, algorithm and logic/math in Python</li>
-<li>frontend in Javascript (optional:by using three.js/p5.js), play video file using JS </li>
-</ul>
+This project is dedicated to creating some Cellular automata that I personally find interesting.
+The goal is to simulate in 1-D, 2-D and 3-D.
 <h4>Charasteristics of a Cellular automata (=CA):</h4>
 <ul>
     <li>A grid of cells (1-D, 2-D, 3-D)</li>
@@ -18,14 +13,96 @@ The goal is to scale from a 1-D implementation, to 2-D and 3-D implementations.
     </li>
     <li><h4>Rulesets:</h4></li>
         <ul>
-            <li>1-D example: Wolfram Elementary CA</li>
-            <li>Conway's Game of Life</li>
-            <li>--</li>
-            <li>--</li>
-            <li>---</li>
-            <li>---</li>
+            <li>1D: Wolfram Elementary CA</li>
+            <li>2D: Conway's Game of Life</li>
+            <li>3D: Crystal Growth 1 (Jason Rampe) as 0-6/1,3/2/N</li>
         </ul>
 </ul>
+
+## Getting Started
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+
+### Prerequisites
+
+The software and versions needed:
+
+```
+Using Python 3.9.6
+Using Apple clang version 15.0.0 (clang-1500.3.9.4)
+    Target: arm64-apple-darwin23.3.0
+    Thread model: posix
+    OS: macOS Sonoma 14.3
+    Chip: Apple M1
+    XCode: 15.3
+Using LLVM version 16.0.0
+See requirements.txt for Python modules to install.
+```
+
+### Installing
+
+A step by step series of examples that tell you how to get a development and deployment env running on Mac, assuming you have git installed. 
+Other versions may still work but should be avoided. 
+
+Step 1: Install correct python version: https://www.python.org/downloads/
+
+Step 2: Install correct clang version
+```
+until finished
+```
+
+Step 3: Clone repository (==repo)
+At your desired folder, run:
+```
+git clone https://github.com/timjs02/Cellular_automata-app.git
+```
+
+Step 4: Set up virtual environment for python in the repo base folder
+```
+example
+```
+
+Step 5: Activate virtual environment and install dependencies
+```
+example
+```
+Use requirements.txt to install python modules and dependencies
+```
+python -m pip install -r requirements.txt
+```
+
+
+## Demo
+
+## Deployment
+Step 1: Compile C file, for example in 3D. Important: Do not change the path in the repo and the name of the file /src/3D/3D !
+```
+/path/.../clang -g /path/to/repo/.../Cellular_automata-app/src/3D/3D.c -o /path/to/repo/.../Cellular_automata-app/src/3D/3D
+```
+Example: 3D
+```
+/usr/bin/clang -g /path/to/repo/.../Cellular_automata-app/src/3D/3D.c -o /path/to/repo/.../Cellular_automata-app/src/3D/3D
+```
+Step 2: Run python file, for 3D
+```
+/path/to/repo/.../Cellular_automata-app/.venv/bin/python /path/to/repo/.../Cellular_automata-app/src/3D/3D_UI.py
+```
+Step 3: Enter desired inputs for the simulation, where:
+- size: Length of one "dimension" or axis
+- generations: Number of generations to calculate. Note that needed compute increases with O(n^3) per generation, where n equals size.
+- time delay: time between frames in milliseconds
+
+Step 4: Last simulation is stored as "3D_animation.gif" in /ext/
+
+## Approach
+<ul>
+<li>scripting, algorithm and logic/math in Python</li>
+<li>frontend in Javascript (optional:by using three.js/p5.js), play video file using JS </li>
+</ul>
+
+## Implementation
+
+### General
 <h4>General algorithm for CA:</h4>
 <ul>
     <li>Create x-D Grid</li>
@@ -34,6 +111,30 @@ The goal is to scale from a 1-D implementation, to 2-D and 3-D implementations.
     <li>Make frames of gens -> play frames ...</li>
 </ul>
 
+### 1D
+<h4>Constraints for 1D / Wolfram Elementary CA:</h4>
+<ul>
+    <li>Cell-Grid: 1-D</li>
+    <li>Cell: 1 Square</li>
+    <li>States: 2 States -> 0/1</li>
+    <li>Neighborhood: Adjascent cells to a cell -> 3 cells total</li>
+    <li>cell at t = f(neighbors at t-1) = tbd</li>
+</ul>
+
+<h4>General algorithm for 1D / Wolfram Elementary CA:</h4>
+<ul>
+    <li>Create 1-D Grid</li>
+    <li>Initialize initial conditions => gen 0, e.g. center cell = 1</li>
+    <li>Calculate gen 1, the state of each cell = f(neighborhood at t-1) = binary number representation to arbitrary output mapping (2**8, 256 rulesets possible with just this definition)</li>
+</ul>
+
+<h4>ruleset-table: rule 90, or binary rule 01011010</h4>
+<ul>
+    <li>neihboorhood -> 111 110 101 100 011 010 001 000</li>
+    <li>center cell state-> 0 1 0 1 1 0 1 0</li>
+</ul>
+
+<h4>other rulesets: (link...)</h4>
 <h4>Pseudocode:</h4>
 
 <code>
@@ -136,30 +237,13 @@ The goal is to scale from a 1-D implementation, to 2-D and 3-D implementations.
         display(frames, inf, gen_c)
 </code>
 
-_________________________________________________
+## License
 
-<h4>Constraints for Wolfram Elementary CA:</h4>
-<ul>
-    <li>Cell-Grid: 1-D</li>
-    <li>Cell: 1 Square</li>
-    <li>States: 2 States -> 0/1</li>
-    <li>Neighborhood: Adjascent cells to a cell -> 3 cells total</li>
-    <li>cell at t = f(neighbors at t-1) = tbd</li>
-</ul>
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-<h4>General algorithm for Wolfram Elementary CA:</h4>
-<ul>
-    <li>Create 1-D Grid</li>
-    <li>Initialize initial conditions => gen 0, e.g. center cell = 1</li>
-    <li>Calculate gen 1, the state of each cell = f(neighborhood at t-1) = binary number representation to arbitrary output mapping (2**8, 256 rulesets possible with just this definition)</li>
-</ul>
+## Acknowledgments
 
-<h4>ruleset-table: rule 90, or binary rule 01011010</h4>
-<ul>
-    <li>neihboorhood -> 111 110 101 100 011 010 001 000</li>
-    <li>center cell state-> 0 1 0 1 1 0 1 0</li>
-</ul>
+* Inspiration: https://matplotlib.org/stable/gallery/animation/dynamic_image.html, https://matplotlib.org/stable/gallery/animation/animation_demo.html, https://matplotlib.org/stable/gallery/mplot3d/voxels_numpy_logo.html#sphx-glr-gallery-mplot3d-voxels-numpy-logo-py, https://matplotlib.org/stable/gallery/animation/random_walk.html#sphx-glr-gallery-animation-random-walk-py, https://matplotlib.org/stable/plot_types/3D/voxels_simple.html#sphx-glr-plot-types-3d-voxels-simple-py
+* Credit for rules implemented in testing: https://softologyblog.wordpress.com/2019/12/28/3d-cellular-automata-3/
+* Readme Template: https://gist.github.com/timjs02/723e52bee7e99c61ab8dd3455d7d65c5
 
-<h4>other rulesets: (link...)</h4>
-
-_______________________________________________________________________________________

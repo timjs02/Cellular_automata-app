@@ -3,33 +3,80 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <time.h>
-
+#include <string.h>
 
 /// @param grid Pointer to the grid
 /// @param size Size of the grid (assuming square grid)
 /// @param x x coordinate
 /// @param y y coordinate
 /// @return Number of alive neighbors
-int neighborhood(int** grid, int size, int x, int y) {
+int neighborhood_M(int** grid, int size, int x, int y) {
     int sum = 0;
     
     // Iterate through the Moore neighborhood (3x3 grid centered on (x, y))
     for (int dx = -1; dx <= 1; dx++) {
         for (int dy = -1; dy <= 1; dy++) {
-            // Skip the center cell (x, y) itself
-            if (dx == 0 && dy == 0) {
+            // Skip the center cell (x, y) and diagonal neighbors
+            if ((dx == 0 && dy == 0)) {
                 continue;
             }
 
             // Calculate neighbor coordinates
             int nx = x + dx;
             int ny = y + dy;
-            //assert(nx >= 0 && nx < size && ny >= 0 && ny < size);
-            // Check if the neighbor is within bounds
-            if ((nx >= 0 && nx < size && ny >= 0 && ny < size)) {
-                // Add the value of the neighbor to the sum
-                sum += grid[ny][nx];
+            // Toroidal wrapping
+            // If the neighbor is out of bounds, wrap around
+            if (nx < 0) { 
+                nx += size; 
             }
+            if (nx >= size) { 
+                nx -= size; 
+            }
+            if (ny < 0) { 
+                ny += size; 
+            }
+            if (ny >= size) { 
+                ny -= size; 
+            }
+            // Add the value of the neighbor to the sum
+            sum += grid[ny][nx];
+        }
+    }
+    //printf("Sum of neighbors for cell (%d, %d): %d\n", x, y, sum);
+    return sum;
+}
+
+int neighborhood_N(int** grid, int size, int x, int y) {
+    int sum = 0;
+    
+    // Iterate through the Moore neighborhood (3x3 grid centered on (x, y))
+    for (int dx = -1; dx <= 1; dx++) {
+        for (int dy = -1; dy <= 1; dy++) {
+            // Skip the center cell (x, y) and diagonal neighbors
+            if ((dx == 0 && dy == 0) || (abs(dx) + abs(dy) != 1)) {
+                continue;
+            }
+
+            // Calculate neighbor coordinates
+            int nx = x + dx;
+            int ny = y + dy;
+            // Toroidal wrapping
+            // If the neighbor is out of bounds, wrap around
+            if (nx < 0) { 
+                nx += size; 
+            }
+            if (nx >= size) { 
+                nx -= size; 
+            }
+            if (ny < 0) { 
+                ny += size; 
+            }
+            if (ny >= size) { 
+                ny -= size; 
+            }
+                
+            // Add the value of the neighbor to the sum
+            sum += grid[ny][nx];
         }
     }
     //printf("Sum of neighbors for cell (%d, %d): %d\n", x, y, sum);
@@ -59,13 +106,21 @@ void print_grid(int** grid, int size, int gen){
 /// @param grid grid pointer
 /// @param size grid size
 /// @param gen generation count number 
-void cell_calc(int** grid, int** next_grid, int size, int gen){
+void cell_calc(int** grid, int** next_grid, int size, int gen, int neighborhood_type){
     for (size_t y = 0; y < size; y++)
     {
         for (size_t x = 0; x < size; x++)
         {
             // Simulitnaneous calculation for next generation
-            int nb_sum = neighborhood(grid, size, x, y);
+            int nb_sum;
+            if (neighborhood_type == 1) {
+                /* code */
+                nb_sum = neighborhood_N(grid, size, x, y);
+            }
+            else if (neighborhood_type == 0)  // Moore neighborhood  
+            {
+                nb_sum = neighborhood_M(grid, size, x, y);
+            }
 
             int cell = grid[y][x];
             // death
@@ -126,25 +181,30 @@ void init_rnd(int** grid, int** next_grid, int size){
 int main(int argc, char **argv){
     // Row is "size" cells long -> allocate for length, where each row is array
     int size = 10;
-    int gen = 5; // generations to calculate
+    int gen = 10; // generations to calculate
+    int neighborhood_type = 0; // Default neighborhood type: Moore
+
     if (argc > 1)
     {
-        // Size custom, default generation count
-        if (argc == 2 && atoi(argv[1]) > 0)
-        {
-            size = atoi(argv[1]);
-        }
         // Help message
-        else if (argv[1] == "-h")
+        if (strcmp(argv[1], "-h") == 0)
         {
-            printf("Usage: %s <size> <generations>\n", argv[0]);
+            printf("Usage: %s <neighborhood_type> <size> <generations>\n", argv[0]);
+            printf("neighborhood_type: 0 for Moore, 1 for von Neumann (default: 0)\n");
             return 0;
         }
-        // Size and generation count custom
-        else if (argc > 2)
+        // Neighborhood type custom: 
+        neighborhood_type = atoi(argv[1]);
+
+        // Size custom, default generation count
+        if (argc > 2 && atoi(argv[2]) > 0)
         {
-            if (atoi(argv[1]) > 0) size = atoi(argv[1]);
-            if (atoi(argv[2]) > 0) gen = atoi(argv[2]);
+            size = atoi(argv[2]);
+        }
+        // Size and generation count custom
+        if (argc > 3 && atoi(argv[3]) > 0)
+        {
+            gen = atoi(argv[3]);
         }
     }
 
@@ -176,7 +236,7 @@ int main(int argc, char **argv){
     for (int g = 1; g < gen; g++)
     {
         // calculate next generation
-        cell_calc(grid, next_grid, size, g);
+        cell_calc(grid, next_grid, size, g, neighborhood_type);
         
         // print grid for next generation
         print_grid(next_grid, size, g);
