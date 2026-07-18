@@ -31,7 +31,6 @@ These instructions will get you a copy of the project up and running on your loc
 Things you need in order to install the software and how to install them
 
 ```
-Give examples
 See requirements.txt for Python version and modules to install.
 ```
 
